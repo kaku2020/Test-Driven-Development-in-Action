@@ -1,6 +1,12 @@
-// StrinCalcultor class
+// StringCalcultor class
 class Stringcalculator {
     constructor() {}
+
+    Add () {//Test case passed 1
+        return 0;
+    }
+
+    
 }
 
 //For testing the code base in the terminal
