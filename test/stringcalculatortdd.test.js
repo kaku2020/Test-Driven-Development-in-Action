@@ -18,7 +18,7 @@ class Stringcalculator {
 //   }
 
 Add(numbers) {
-    //Test case passed 1-2
+    //Test case passed 1-3
     if (numbers !== undefined && numbers.length > 0) {
       const sanitizedNumbers = numbers.replace(/\n/g, ',');
       const numberArray = sanitizedNumbers.split(",").map((num) => parseInt(num));
@@ -28,6 +28,7 @@ Add(numbers) {
         return 0;
     }
   }
+  
   
 }
 
@@ -63,6 +64,18 @@ describe("The String Calculator using Test Driven Development", () => {
     expect(result).toBe(15);
     const result2 = calculator.Add("1\n2,3\n4,5");
     expect(result2).toBe(15);
+  });
+
+  it("should throw ans error for input with empty number and  wrong number like a ", () => {
+    expect(() => calculator.Add("1\n,2,3")).toThrowError(
+        "Invalid input: Empty number"
+    );
+    expect(() => calculator.Add("\n,1,2,3")).toThrowError(
+        "Invalid input: Empty number"
+    );
+    expect(() => calculator.Add("1\n2,a,3\n4,5\n")).toThrowError(
+        "Invalid input: Not a number - a"
+    )
   });
 
  
