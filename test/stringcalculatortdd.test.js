@@ -17,18 +17,39 @@ class Stringcalculator {
 //     }
 //   }
 
-Add(numbers) {
+// Add(numbers) {
+//     //Test case passed 1-3
+//     if (numbers !== undefined && numbers.length > 0) {
+//       const sanitizedNumbers = numbers.replace(/\n/g, ',');
+//       const numberArray = sanitizedNumbers.split(",").map((num) => parseInt(num));
+//       const sum = numberArray.reduce((acc, num) => acc + num, 0);
+//       return sum;} 
+//       else {
+//         return 0;
+//     }
+//   }
+  
+  Add(numbers) {
     //Test case passed 1-3
-    if (numbers !== undefined && numbers.length > 0) {
+    if (numbers !== undefined && typeof numbers === "string" && numbers.length > 0) {
+
       const sanitizedNumbers = numbers.replace(/\n/g, ',');
-      const numberArray = sanitizedNumbers.split(",").map((num) => parseInt(num));
+      const numberArray = sanitizedNumbers.split(",").map((num) => {
+        if(num.trim() === ""){
+            throw new Error("Invalid input: Empty number")
+        }
+        const parsedNum = parseInt(num);
+        if(isNaN(parsedNum)){
+            throw new Error(`Invalid input: Not a number - ${num}`)
+        }
+        return parsedNum;
+      });
       const sum = numberArray.reduce((acc, num) => acc + num, 0);
       return sum;} 
       else {
         return 0;
     }
   }
-  
   
 }
 
