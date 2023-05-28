@@ -50,6 +50,8 @@ class Stringcalculator {
         return 0;
     }
   }
+
+  
   
 }
 
@@ -99,5 +101,11 @@ describe("The String Calculator using Test Driven Development", () => {
     )
   });
 
+  it("Support different delimiters", () => {
+    const result = calculator.Add("//;\n1;2");
+    expect(result).toBe(3);
+    const result2 = calculator.Add("//;;;\n1;;;2");
+    expect(result2).toBe(3);
+  });
  
 });
