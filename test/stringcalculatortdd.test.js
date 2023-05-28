@@ -6,53 +6,93 @@ class Stringcalculator {
   //     return 0;
   // }
 
-//   Add(numbers) {
-//     //Test case passed 1-2
-//     if (numbers !== undefined && numbers.length > 0) {
-//       const numberArray = numbers.split(",").map((num) => parseInt(num));
-//       const sum = numberArray.reduce((acc, num) => acc + num, 0);
-//       return sum;} 
-//       else {
-//         return 0;
-//     }
-//   }
+  //   Add(numbers) {
+  //     //Test case passed 1-2
+  //     if (numbers !== undefined && numbers.length > 0) {
+  //       const numberArray = numbers.split(",").map((num) => parseInt(num));
+  //       const sum = numberArray.reduce((acc, num) => acc + num, 0);
+  //       return sum;}
+  //       else {
+  //         return 0;
+  //     }
+  //   }
 
-// Add(numbers) {
-//     //Test case passed 1-3
-//     if (numbers !== undefined && numbers.length > 0) {
-//       const sanitizedNumbers = numbers.replace(/\n/g, ',');
-//       const numberArray = sanitizedNumbers.split(",").map((num) => parseInt(num));
-//       const sum = numberArray.reduce((acc, num) => acc + num, 0);
-//       return sum;} 
-//       else {
-//         return 0;
-//     }
-//   }
-  
+  // Add(numbers) {
+  //     //Test case passed 1-3
+  //     if (numbers !== undefined && numbers.length > 0) {
+  //       const sanitizedNumbers = numbers.replace(/\n/g, ',');
+  //       const numberArray = sanitizedNumbers.split(",").map((num) => parseInt(num));
+  //       const sum = numberArray.reduce((acc, num) => acc + num, 0);
+  //       return sum;}
+  //       else {
+  //         return 0;
+  //     }
+  //   }
+
+  //   Add(numbers) {
+  //     //Test case passed 1-4
+  //     if (numbers !== undefined && typeof numbers === "string" && numbers.length > 0) {
+
+  //       const sanitizedNumbers = numbers.replace(/\n/g, ',');
+  //       const numberArray = sanitizedNumbers.split(",").map((num) => {
+  //         if(num.trim() === ""){
+  //             throw new Error("Invalid input: Empty number")
+  //         }
+  //         const parsedNum = parseInt(num);
+  //         if(isNaN(parsedNum)){
+  //             throw new Error(`Invalid input: Not a number - ${num}`)
+  //         }
+  //         return parsedNum;
+  //       });
+  //       const sum = numberArray.reduce((acc, num) => acc + num, 0);
+  //       return sum;}
+  //       else {
+  //         return 0;
+  //     }
+  //   }
+
   Add(numbers) {
-    //Test case passed 1-3
-    if (numbers !== undefined && typeof numbers === "string" && numbers.length > 0) {
-
-      const sanitizedNumbers = numbers.replace(/\n/g, ',');
-      const numberArray = sanitizedNumbers.split(",").map((num) => {
-        if(num.trim() === ""){
-            throw new Error("Invalid input: Empty number")
+    //Test case passed 1-5
+    if (
+      numbers !== undefined &&
+      typeof numbers === "string" &&
+      numbers.length > 0
+    ) {
+      let delimiterFlag = 0;
+      let delimiterindex = "";
+      if (
+        numbers.length > 5 &&
+        numbers.substring(0, 2) == "//" &&
+        numbers.includes("\n")
+      ) {
+        delimiterFlag = 1;
+        delimiterindex = numbers.substring(2, numbers.indexOf("\n"));
+        numbers = numbers.substring(numbers.indexOf("\n" + 2 - 1));
+      }
+      const sanitizedNumbers =
+        delimiterFlag === 0
+          ? numbers.replace(/\n/g, ",")
+          : numbers.replace(/\n/g, delimiterindex);
+      let sanitizedNumbersPreprocessor =
+        delimiterFlag === 0
+          ? sanitizedNumbers.split(",")
+          : sanitizedNumbers.split(delimiterindex);
+      const numberArray = sanitizedNumbersPreprocessor.map((num) => {
+        if (num.trim() === "") {
+          throw new Error("Invalid input: Empty number");
         }
         const parsedNum = parseInt(num);
-        if(isNaN(parsedNum)){
-            throw new Error(`Invalid input: Not a number - ${num}`)
+        if (isNaN(parsedNum)) {
+          throw new Error(`Invalid input: Not a number - ${num}`);
         }
         return parsedNum;
       });
       const sum = numberArray.reduce((acc, num) => acc + num, 0);
-      return sum;} 
-      else {
-        return 0;
+      return sum;
+    } else {
+      return 0;
     }
   }
-
-  
-  
 }
 
 //For testing the code base in the terminal
@@ -91,14 +131,14 @@ describe("The String Calculator using Test Driven Development", () => {
 
   it("should throw ans error for input with empty number and  wrong number like a ", () => {
     expect(() => calculator.Add("1\n,2,3")).toThrowError(
-        "Invalid input: Empty number"
+      "Invalid input: Empty number"
     );
     expect(() => calculator.Add("\n,1,2,3")).toThrowError(
-        "Invalid input: Empty number"
+      "Invalid input: Empty number"
     );
     expect(() => calculator.Add("1\n2,a,3\n4,5\n")).toThrowError(
-        "Invalid input: Not a number - a"
-    )
+      "Invalid input: Not a number - a"
+    );
   });
 
   it("Support different delimiters", () => {
@@ -107,5 +147,4 @@ describe("The String Calculator using Test Driven Development", () => {
     const result2 = calculator.Add("//;;;\n1;;;2");
     expect(result2).toBe(3);
   });
- 
 });
