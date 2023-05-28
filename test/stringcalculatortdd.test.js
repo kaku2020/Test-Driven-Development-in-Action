@@ -26,4 +26,14 @@ describe("The String Calculator using Test Driven Development", () => {
         const result1 = calculator.Add("");
         expect(result1).toBe(0);
     });
+
+    it("Add method should return the sum of one number, two number, many number", () => {
+        const result = calculator.Add(2);
+        expect(result).toBe(2);
+        const result2 = calculator.Add("2,3");
+        expect(result2).toBe(5);
+        const result3 = calculator.Add("2, 3, 57, 78");
+        expect(result3).toBe(140); 
+
+    });
 })
