@@ -16,6 +16,8 @@ class Stringcalculator {
         return 0;
     }
   }
+
+  
 }
 
 //For testing the code base in the terminal
@@ -44,4 +46,13 @@ describe("The String Calculator using Test Driven Development", () => {
     const result3 = calculator.Add("2, 3, 57, 78");
     expect(result3).toBe(140);
   });
+
+  it("should return the correct sum for numbers seperated by new lines and commas", () => {
+    const result = calculator.Add("1\n2\n3\n4\n5");
+    expect(result).toBe(15);
+    const result2 = calculator.Add("1\n2,3\n4,5");
+    expect(result2).toBe(15);
+  });
+
+ 
 });
