@@ -6,17 +6,28 @@ class Stringcalculator {
   //     return 0;
   // }
 
-  Add(numbers) {
+//   Add(numbers) {
+//     //Test case passed 1-2
+//     if (numbers !== undefined && numbers.length > 0) {
+//       const numberArray = numbers.split(",").map((num) => parseInt(num));
+//       const sum = numberArray.reduce((acc, num) => acc + num, 0);
+//       return sum;} 
+//       else {
+//         return 0;
+//     }
+//   }
+
+Add(numbers) {
     //Test case passed 1-2
     if (numbers !== undefined && numbers.length > 0) {
-      const numberArray = numbers.split(",").map((num) => parseInt(num));
+      const sanitizedNumbers = numbers.replace(/\n/g, ',');
+      const numberArray = sanitizedNumbers.split(",").map((num) => parseInt(num));
       const sum = numberArray.reduce((acc, num) => acc + num, 0);
       return sum;} 
       else {
         return 0;
     }
   }
-
   
 }
 
