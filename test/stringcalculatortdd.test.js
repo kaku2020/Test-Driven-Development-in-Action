@@ -147,4 +147,10 @@ describe("The String Calculator using Test Driven Development", () => {
     const result2 = calculator.Add("//;;;\n1;;;2");
     expect(result2).toBe(3);
   });
+
+  it('Calling Add with a negative number will throw an exception "negatives not allowed" - and the negative that was passed.', () => {
+    expect(() =>
+      calculator.Add("//;;;\n1\n2;;;-34\n4;;;-5;;; -6")
+    ).toThrowError("negatives not allowed  : -34,-5,-6");
+  });
 });
