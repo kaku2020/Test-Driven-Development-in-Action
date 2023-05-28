@@ -1,4 +1,4 @@
-// StringCalcultor class
+// StringCalcultor class sequencial the final result is in other file 
 class Stringcalculator {
   constructor() {}
 
@@ -51,14 +51,83 @@ class Stringcalculator {
   //     }
   //   }
 
-  Add(numbers) {
-    //Test case passed 1-5
+//   Add(numbers) {
+//     //Test case passed 1-5
+//     if (
+//       numbers !== undefined &&
+//       typeof numbers === "string" &&
+//       numbers.length > 0
+//     ) {
+//       let delimiterFlag = 0;
+//       let delimiterindex = "";
+//       if (
+//         numbers.length > 5 &&
+//         numbers.substring(0, 2) == "//" &&
+//         numbers.includes("\n")
+//       ) {
+//         delimiterFlag = 1;
+//         delimiterindex = numbers.substring(2, numbers.indexOf("\n"));
+//         numbers = numbers.substring(numbers.indexOf("\n" + 2 - 1));
+//       }
+//       const sanitizedNumbers =
+//         delimiterFlag === 0
+//           ? numbers.replace(/\n/g, ",")
+//           : numbers.replace(/\n/g, delimiterindex);
+//       let sanitizedNumbersPreprocessor =
+//         delimiterFlag === 0
+//           ? sanitizedNumbers.split(",")
+//           : sanitizedNumbers.split(delimiterindex);
+//       const numberArray = sanitizedNumbersPreprocessor.map((num) => {
+//         if (num.trim() === "") {
+//           throw new Error("Invalid input: Empty number");
+//         }
+//         const parsedNum = parseInt(num);
+//         if (isNaN(parsedNum)) {
+//           throw new Error(`Invalid input: Not a number - ${num}`);
+//         }
+//         return parsedNum;
+//       });
+//       const sum = numberArray.reduce((acc, num) => acc + num, 0);
+//       return sum;
+//     } else {
+//       return 0;
+//     }
+//   }
+
+Add(numbers) {
+    //Test case passed 1-6
     if (
       numbers !== undefined &&
       typeof numbers === "string" &&
       numbers.length > 0
     ) {
-      let delimiterFlag = 0;
+    let negativeNum = "";
+      let sanitizedNumbersPreprocessor = this.PreprocessingString(numbers);
+      const numberArray = sanitizedNumbersPreprocessor.map((num) => {
+        if (num.trim() === "") {
+          throw new Error("Invalid input: Empty number");
+        }
+        const parsedNum = parseInt(num);
+        if (parsedNum < 0) {
+            negativeNum += "," + parsedNum.toString();
+        }
+        if (isNaN(parsedNum)) {
+          throw new Error(`Invalid input: Not a number - ${num}`);
+        }
+        return parsedNum;
+      });
+      if (negativeNum.length > 0) {
+        throw new Error("negatives not allowed  : " + negativeNum.substring(1));
+      }
+      const sum = numberArray.reduce((acc, num) => acc + num, 0);
+      return sum;
+    } else {
+      return 0;
+    }
+  }
+
+  PreprocessingString(numbers) {
+    let delimiterFlag = 0;
       let delimiterindex = "";
       if (
         numbers.length > 5 &&
@@ -77,25 +146,14 @@ class Stringcalculator {
         delimiterFlag === 0
           ? sanitizedNumbers.split(",")
           : sanitizedNumbers.split(delimiterindex);
-      const numberArray = sanitizedNumbersPreprocessor.map((num) => {
-        if (num.trim() === "") {
-          throw new Error("Invalid input: Empty number");
-        }
-        const parsedNum = parseInt(num);
-        if (isNaN(parsedNum)) {
-          throw new Error(`Invalid input: Not a number - ${num}`);
-        }
-        return parsedNum;
-      });
-      const sum = numberArray.reduce((acc, num) => acc + num, 0);
-      return sum;
-    } else {
-      return 0;
+    return sanitizedNumbersPreprocessor
     }
-  }
 }
 
 //For testing the code base in the terminal
+// const calculator = new Stringcalculator();
+// const result = calculator.PreprocessingString("1\n2,-34\n4,-5, -6");
+// console.log(result);
 
 //Writing the unit testcases
 
@@ -149,6 +207,10 @@ describe("The String Calculator using Test Driven Development", () => {
   });
 
   it('Calling Add with a negative number will throw an exception "negatives not allowed" - and the negative that was passed.', () => {
+    const result = calculator.PreprocessingString("//;\n1;2");
+    expect(result).toEqual(["1", "2"]);
+    const result2 = calculator.PreprocessingString("//;;;\n1;;;2");
+    expect(result2).toEqual(["1", "2"]);
     expect(() =>
       calculator.Add("//;;;\n1\n2;;;-34\n4;;;-5;;; -6")
     ).toThrowError("negatives not allowed  : -34,-5,-6");
